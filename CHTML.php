@@ -1,5 +1,14 @@
 <?php
 	
+	// ************************************************
+	//	CHTML
+	/*!
+		@brief CHTML - HTML Class for PHP
+
+		@author Aleksi Räsänen
+		        aleksi.rasanen@runosydan.net
+	*/
+	// ************************************************
 	class CHTML
 	{
 		//! Language to set in <html language part
@@ -65,7 +74,8 @@
 		// ************************************************
 		//	createSiteBottom
 		/*!
-			@brief Create site bottom. Close </body> and </html>
+			@brief Create site bottom. This will Close 
+			  </body> and </html> tags.
 
 			@return String.
 		*/
@@ -134,7 +144,7 @@
 		/*!
 			@brief Set keywords to use in HTML header.
 
-			@param $keywords. Should be string, so multiple values
+			@param $keywords Should be string, so multiple values
 			  are given just using , as a separator.
 		*/
 		// ************************************************
