@@ -29,6 +29,10 @@
 		//! Array of extra parameters for next creating item
 		private $params;
 
+		//! Messages what will be shown with getMessage are stored here.
+		private $message = array();
+
+
 		// ************************************************
 		//	__construct
 		/*!
@@ -43,6 +47,7 @@
 			$this->js_files = null;
 			$this->css_files = null;
 			$this->params = null;
+			$this->message['msg'] = '';
 		}
 
 		// ************************************************
@@ -192,6 +197,25 @@
 		}
 
 		// **************************************************
+		//	createImg
+		/*!
+			@brief This will create HTML <img> tag
+
+			@param $src Image source
+
+			@return String.
+		*/
+		// **************************************************
+		public function createImg( $src )
+		{
+			$out = '<img src="' . $src . '"';
+			$out .= $this->add_extra_params( 'img' );
+			$out .= ' />' . "\n";
+
+			return $out;
+		}
+
+		// **************************************************
 		//	createTable
 		/*!
 			@brief Create HTML table and add rows CSS class
@@ -234,6 +258,86 @@
 			return $out;
 		}
 
+		// **************************************************
+		//	setMessage
+		/*!
+			@brief This will set message what can be later
+			  seen by getMessage or showMessage.
+
+			@param $msg Message
+		*/
+		// **************************************************
+		public function setMessage( $msg )
+		{
+			$this->message['msg'] = $msg;
+		}
+
+		// **************************************************
+		//	getMessage
+		/*!
+			@brief Read message from class private variable.
+			  This message is stored via setMessage method.
+
+			@return String.
+		*/
+		// **************************************************
+		public function getMessage()
+		{
+			return $this->message['msg'];
+		}
+
+		// **************************************************
+		//	showMessage
+		/*!
+			@brief Creates a DIV with class message and shows
+			  a message if any is stored in $message array.
+
+			@return String.
+		*/
+		// **************************************************
+		public function showMessage()
+		{
+			$message = $this->message;
+			$params = $this->params;
+			$out = '';
+
+			if( $message['msg'] != '' )
+			{
+				$out .= '<div id="msg" class="message">' . "\n";
+
+				// If there is icon what is set to params array, 
+				// then add it if file exists.
+				if( isset( $params['icon'] ) )
+				{
+					if( file_exists( $params['icon'] ) )
+						$out .= $this->createImg( $params['icon'] );
+				}
+
+				// Add our message
+				$out .= $message['msg'] . "\n";
+
+				if( file_exists( 'icons/close_message.png' ) )
+					$text = $this->createImg( 'icons/close_message.png' );
+				else
+					$text = 'Close';
+
+				// JavaScript to hide element "msg" (eg. our msg div).
+				// Seems to wok in Safari and Firefox at least.
+				$js = 'document.getElementById(\'msg\').style.'
+					. 'display=\'none\'; return false;';
+
+				// Set extra parameters for our close-button/text.
+				$this->setExtraParams( array(
+					'class' => 'close_icon',
+					'title' => 'Close this message',
+					'onclick' => $js ) );
+
+				$out .= $this->createLink( '#', $text );
+				$out .= '</div>' . "\n";
+			} 
+			return $out;
+		}
+
 		// ************************************************
 		//	add_extra_params
 		/*!
@@ -259,6 +363,15 @@
 				'contextmenu', 'dir', 'draggable', 'hidden', 'id',
 				'item', 'itemprop', 'lang', 'spellcheck', 'style',
 				'subject', 'tabindex', 'title' );
+			
+			$mouse_events = array( 'onclick', 'ondblclick', 'ondrag',
+				'ondragend', 'ondragenter', 'ondragleave', 'ondragover',
+				'ondragstop', 'ondrop', 'onmousedown', 'onmousemove',
+				'onmouseout', 'onmouseover', 'onmouseup', 'ommousewheel',
+				'onscroll' );
+
+			$common = array_merge( $common, $mouse_events );
+			$specific = array();
 
 			// Define supported attributes for 'a'. 
 			// See http://s.runosydan.net/oku7 for more info.
@@ -266,6 +379,11 @@
 			{
 				$specific = array( 'href', 'hreflang', 'media',
 					'ping', 'rel', 'target', 'type' );
+			}
+			else if( $type == 'img' )
+			{
+				$specific = array( 'alt', 'height', 'ismap', 'usemap',
+					'width' );
 			}
 
 			foreach( $common as $val )
