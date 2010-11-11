@@ -216,6 +216,85 @@
 		}
 
 		// **************************************************
+		//	createH
+		/*!
+			@brief Create header tag, eg. h1-h6
+
+			@param $size Size of header, 1-6
+
+			@param $text Title of header
+
+			@return String
+		*/
+		// **************************************************
+		public function createH( $size, $text )
+		{
+			$out = '<h' . $size;
+			$out .= $this->add_extra_params( 'h' );
+			$out .= '>' . $text . '</h' . $size . '>' . "\n";
+
+			return $out;
+		}
+
+		// **************************************************
+		//	createP
+		/*!
+			@brief Create paragraph
+
+			@param $text Text inside <p> and </p> tags.
+
+			@return String
+		*/
+		// **************************************************
+		public function createP( $text )
+		{
+			$out = '<p';
+			$out .= $this->add_extra_params( 'p' );
+			$out .= '>' . $text;
+			$out .= '</p>' . "\n";
+
+			return $out;
+		}
+
+		// **************************************************
+		// 	createDiv
+		/*!
+			@brief Create div-element
+
+			@param $text Text inside div.
+
+			@return String
+		*/
+		// **************************************************
+		public function createDiv( $text )
+		{
+			$out = '<div';
+			$out .= $this->add_extra_params( 'div' );
+			$out .= '>' . "\n" . $text . '</div>' . "\n";
+			
+			return $out;
+		}
+
+		// **************************************************
+		//	createSpan
+		/*!
+			@brief Create span-element
+
+			@param $text Text inside <span> and </span> tags
+
+			@return String
+		*/
+		// **************************************************
+		public function createSpan( $text )
+		{
+			$out = '<span';
+			$out .= $this->add_extra_params( 'span' );
+			$out .= '>' . $text . '</span>' . "\n";
+
+			return $out;
+		}
+
+		// **************************************************
 		//	createTable
 		/*!
 			@brief Create HTML table and add rows CSS class
@@ -373,17 +452,18 @@
 			$common = array_merge( $common, $mouse_events );
 			$specific = array();
 
-			// Define supported attributes for 'a'. 
-			// See http://s.runosydan.net/oku7 for more info.
-			if( $type == 'a' )
+			switch( $type )
 			{
-				$specific = array( 'href', 'hreflang', 'media',
-					'ping', 'rel', 'target', 'type' );
-			}
-			else if( $type == 'img' )
-			{
-				$specific = array( 'alt', 'height', 'ismap', 'usemap',
-					'width' );
+				// See http://s.runosydan.net/oku7 for more info.
+				case 'a':
+					$specific = array( 'href', 'hreflang', 'media',
+						'ping', 'rel', 'target', 'type' );
+					break;
+
+				case 'img':
+					$specific = array( 'alt', 'height', 'ismap', 'usemap',
+						'width' );
+					break;
 			}
 
 			foreach( $common as $val )
