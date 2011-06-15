@@ -256,6 +256,24 @@
 			return $out;
 		}
 
+		// ************************************************** 
+		//  createPre
+		/*!
+			@brief Create pre element
+			@param $text Text inside <pre> and </pre> tags
+			@returm String
+		*/
+		// ************************************************** 
+		public function createPre( $text )
+		{
+			$out = '<pre';
+			$out .= $this->add_extra_params( 'pre' );
+			$out .= '>' . $text;
+			$out .= '</pre>' . "\n";
+
+			return $out;
+		}
+
 		// **************************************************
 		// 	createDiv
 		/*!
