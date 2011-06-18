@@ -383,6 +383,32 @@
 			return $this->message['msg'];
 		}
 
+		// ************************************************** 
+		//  setClass
+		/*!
+			@brief Shortcut to setExtraParams where we only
+			  define a class.
+			@param $class_name CSS class name
+		*/
+		// ************************************************** 
+		public function setClass( $class_name )
+		{
+			$this->setExtraParams( array( 'class' => $class_name ) );
+		}
+
+		// ************************************************** 
+		//  setID
+		/*!
+			@brief Shortcut to setExtraParams where we only
+			  define a ID.
+			@param $id_name CSS ID name
+		*/
+		// ************************************************** 
+		public function setID( $id_name )
+		{
+			$this->seExtraParams( array( 'id' => $id_name ) );
+		}
+
 		// **************************************************
 		//	showMessage
 		/*!
